@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marketer_jr/currentUser.dart';
+import 'package:marketer_jr/models/actionHistory.dart';
 import 'package:marketer_jr/models/company.dart';
 import 'package:marketer_jr/models/investment.dart';
 import 'package:marketer_jr/models/investor.dart';
@@ -60,6 +61,8 @@ class _NewInvestmentState extends State<NewInvestment> {
 
     _stateUpdate(() {
       CurrentUser.subtractBalance(totalAmount);
+
+      ActionHistory.addNewRawAction(1, "Purchased ${shareCount} shares from ${_targetCompany.getName()} for \$${totalAmount.toStringAsFixed(2)}");
     });
 
     Navigator.of(context).pop();

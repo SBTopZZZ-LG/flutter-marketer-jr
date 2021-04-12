@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:marketer_jr/models/investor.dart';
 
 class Company {
@@ -10,7 +12,7 @@ class Company {
   List<Investor> _investors = [];
 
   Company(this._id, this._name, this._nShares, this._marketPrice,
-      this._lastMarketPrice);
+      this._lastMarketPrice, this._investors);
 
   String getId() {
     return _id;
@@ -73,5 +75,25 @@ class Company {
 
     this._lastMarketPrice = this._marketPrice;
     this._marketPrice += delta;
+  }
+
+  Map toJson() => {
+    "_id": _id,
+    "_name": _name,
+    "_nShares": _nShares,
+    "_marketPrice": _marketPrice,
+    "_lastMarketPrice": _lastMarketPrice,
+    "_investors": _investors.map((Investor investor) {
+      return jsonEncode(investor.toJson());
+    }).toList(),
+  };
+
+  static Company fromJson(Map json) {
+    return Company(json["_id"], json["_name"], json["_nShares"] as int, json["_marketPrice"] as num,
+        json["_lastMarketPrice"] as num, (jsonDecode(json["_investors"].toString()) as List).map((obj) {
+          print(obj["_nShares"].runtimeType.toString());
+          Map map = obj as Map;
+          return Investor(map["_userId"].toString(), map["_nShares"] as int);
+        }).toList());
   }
 }

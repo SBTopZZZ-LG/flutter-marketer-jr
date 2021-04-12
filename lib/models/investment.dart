@@ -25,4 +25,15 @@ class Investment {
   void deltaShareCount(int delta) {
     _nShares += delta;
   }
+
+  Map toJson() => {
+    "_companyId": _companyId,
+    "_userId": _userId,
+    "_spentPrice": _spentPrice,
+    "_nShares": _nShares,
+  };
+
+  static Investment fromJson(Map json) {
+    return Investment(json["_userId"], json["_companyId"], json["_spentPrice"], json["_nShares"]);
+  }
 }

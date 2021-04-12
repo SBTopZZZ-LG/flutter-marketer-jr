@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marketer_jr/models/actionHistory.dart';
 import 'package:marketer_jr/models/company.dart';
 import 'package:marketer_jr/models/investment.dart';
 import 'package:marketer_jr/models/investor.dart';
@@ -68,6 +69,8 @@ class _ViewInvestmentState extends State<ViewInvestment> {
 
     _stateUpdate(() {
       CurrentUser.addBalance(totalAmount);
+
+      ActionHistory.addNewRawAction(0, "Sold ${shareCount} shares from ${_targetCompany.getName()} for${_investment.getTotalAmount() < totalAmount ? " profit of " : _investment.getTotalAmount() == totalAmount ? "" : " loss of "}\$${(_investment.getTotalAmount() - totalAmount).abs().toStringAsFixed(2)}");
     });
 
     Navigator.of(context).pop();

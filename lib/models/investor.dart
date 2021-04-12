@@ -1,5 +1,5 @@
 class Investor {
-  final String _userId;
+  String _userId;
   int _nShares;
 
   Investor(this._userId, this._nShares);
@@ -14,5 +14,16 @@ class Investor {
 
   void deltaShares(int delta) {
     _nShares += delta;
+  }
+
+  Map<String, Object> toJson() => {
+    "_userId": _userId,
+    "_nShares": _nShares,
+  };
+
+  static Investor fromJson(Map json) {
+    print(json["_userId"]);
+    print(int.parse(json["_nShares"]));
+    return Investor(json["_userId"].toString(), int.parse(json["_nShares"].toString()));
   }
 }
