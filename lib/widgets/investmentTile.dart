@@ -25,7 +25,8 @@ class InvestmentTile extends StatelessWidget {
       trailing: Column(children: [
         Text("B: \$${investment.getTotalAmount().toStringAsFixed(2)}"),
         Text("S: \$${(currentCompany.getMarketPrice() * investment.getShareCount()).toStringAsFixed(2)}", style: TextStyle(fontSize: 18,
-        color: investment.getTotalAmount() < currentCompany.getMarketPrice() * investment.getShareCount() ? Colors.green.shade700 : Colors.red.shade700),),
+        color: investment.getTotalAmount() < currentCompany.getMarketPrice() * investment.getShareCount() ? Colors.green.shade700 :
+        investment.getTotalAmount() == currentCompany.getMarketPrice() * investment.getShareCount() ? Colors.blueGrey : Colors.red.shade700),),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,),
       onTap: () {

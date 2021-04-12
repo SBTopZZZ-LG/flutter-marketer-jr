@@ -65,7 +65,6 @@ class AppPage extends State<MyApp> {
     switch (selectedPage) {
       case 0:
         return Column(children: [
-          Graph(),
           History(),
         ]);
       case 1:
@@ -172,7 +171,8 @@ class AppPage extends State<MyApp> {
 
     if (!isAppStart)
       saveData(
-          investments, companies, ActionHistory.getActions());
+          investments, companies, ActionHistory.getActions()
+      );
     else
       setState(() {
         getData((List<Investment> _investments, List<Company> _companies,
