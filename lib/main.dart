@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:marketer_jr/models/actionHistory.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'currentUser.dart';
 import 'models/investment.dart';
@@ -11,7 +9,6 @@ import 'widgets/investmentList.dart';
 import 'models/company.dart';
 import 'storage/sp.dart';
 import 'widgets/companyList.dart';
-import 'widgets/graph.dart';
 import 'widgets/history.dart';
 
 GlobalKey<NavigatorState> materialAppContext;
@@ -68,13 +65,17 @@ class AppPage extends State<MyApp> {
           History(),
         ]);
       case 1:
-        return Column(children: [
-          CompanyList(companies, buildContext, investments, pageUpdate),
-        ],);
+        return Column(
+          children: [
+            CompanyList(companies, buildContext, investments, pageUpdate),
+          ],
+        );
       case 2:
-        return Column(children: [
-          InvestmentList(investments, companies, buildContext, pageUpdate),
-        ],);
+        return Column(
+          children: [
+            InvestmentList(investments, companies, buildContext, pageUpdate),
+          ],
+        );
       default:
         return null;
     }
@@ -91,7 +92,9 @@ class AppPage extends State<MyApp> {
             ),
             Text(
               "Saumitra Topinkatti",
-              style: TextStyle(fontSize: 16,),
+              style: TextStyle(
+                fontSize: 16,
+              ),
             ),
           ],
         ),
@@ -99,8 +102,7 @@ class AppPage extends State<MyApp> {
           Padding(
             child: Center(
               child: Text(
-                "Wallet: \$${CurrentUser.getAvailableBalance()
-                    .toStringAsFixed(2)}",
+                "Wallet: \$${CurrentUser.getAvailableBalance().toStringAsFixed(2)}",
                 style: TextStyle(fontSize: 18),
               ),
             ),
@@ -111,52 +113,51 @@ class AppPage extends State<MyApp> {
       body: returnCurrentPage(context),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home),
-              label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.list),
-              label: "Companies"),
-          BottomNavigationBarItem(icon: Icon(Icons.request_page),
-              label: "Purchased Shares"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Companies"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.request_page), label: "Purchased Shares"),
         ],
         currentIndex: selectedPage,
         onTap: (newIndex) => onPageSwitch(newIndex),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh), tooltip: "Simulate day", onPressed: () {
-        pageUpdate(() {
-          for (int i = 0; i < companies.length; i++) {
-            Company company = companies[i];
-            List<bool> values = generatedValues[i];
+        child: Icon(Icons.refresh),
+        tooltip: "Simulate day",
+        onPressed: () {
+          pageUpdate(() {
+            for (int i = 0; i < companies.length; i++) {
+              Company company = companies[i];
+              List<bool> values = generatedValues[i];
 
-            if (values.length > 20)
-              values.removeAt(0);
+              if (values.length > 20) values.removeAt(0);
 
-            num delta = Random().nextInt(2) == 0 ? Random().nextDouble() *
-                Random().nextInt(1000) : Random().nextInt(
-                Random().nextInt(1000));
+              num delta = Random().nextInt(2) == 0
+                  ? Random().nextDouble() * Random().nextInt(1000)
+                  : Random().nextInt(Random().nextInt(1000));
 
-            double positivity = 0;
-            double bonusFactor = 0;
-            for (bool value in values.reversed) {
-              positivity += (value ? 1 : 0) / values.length;
-              positivity += bonusFactor;
-              bonusFactor += value ? 0.075 : -1 * bonusFactor;
+              double positivity = 0;
+              double bonusFactor = 0;
+              for (bool value in values.reversed) {
+                positivity += (value ? 1 : 0) / values.length;
+                positivity += bonusFactor;
+                bonusFactor += value ? 0.075 : -1 * bonusFactor;
+              }
+
+              int temp = Random().nextInt(values.length + 1);
+              bool isAddition = temp >= values.length
+                  ? (positivity > 0.5 ? false : true)
+                  : values[temp];
+              values.add(isAddition);
+
+              company.deltaMarketPrice(delta * (isAddition ? 1 : -1));
+              company.deltaShares(Random().nextInt(51) * (isAddition ? 1 : -1));
+
+              print(company.getName());
             }
-
-            int temp = Random().nextInt(values.length + 1);
-            bool isAddition = temp >= values.length ? (positivity > 0.5
-                ? false
-                : true) : values[temp];
-            values.add(isAddition);
-
-            company.deltaMarketPrice(delta * (isAddition ? 1 : -1));
-            company.deltaShares(
-                Random().nextInt(51) * (isAddition ? 1 : -1));
-
-            print(company.getName());
-          }
-        });
-      },),
+          });
+        },
+      ),
     );
   }
 
@@ -165,27 +166,24 @@ class AppPage extends State<MyApp> {
     generatedValues = List<List<bool>>.generate(companies.length, (index) {
       return [
         companies[index].getMarketPrice() >
-            companies[index].getLastMarketPrice() ? true : false
+                companies[index].getLastMarketPrice()
+            ? true
+            : false
       ];
     });
 
     if (!isAppStart)
-      saveData(
-          investments, companies, ActionHistory.getActions()
-      );
+      saveData(investments, companies, ActionHistory.getActions());
     else
       setState(() {
         getData((List<Investment> _investments, List<Company> _companies,
             List<ActionItem> _history) {
           print(_investments);
 
-          if (_investments != null)
-            this.investments = _investments;
-          if (_companies != null)
-            this.companies = _companies;
+          if (_investments != null) this.investments = _investments;
+          if (_companies != null) this.companies = _companies;
           if (_history != null)
-            for (ActionItem item in _history)
-              ActionHistory.addNewAction(item);
+            for (ActionItem item in _history) ActionHistory.addNewAction(item);
         });
       });
 

@@ -10,7 +10,8 @@ class CompanyList extends StatelessWidget {
   final List<Investment> _investments;
   final Function _stateUpdate;
 
-  CompanyList(this.companies, this.rootContext, this._investments, this._stateUpdate);
+  CompanyList(
+      this.companies, this.rootContext, this._investments, this._stateUpdate);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,8 @@ class CompanyList extends StatelessWidget {
               return Card(
                 child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: CompanyTile(item, rootContext, _investments, _stateUpdate),
+                  child: CompanyTile(
+                      item, rootContext, _investments, _stateUpdate),
                 ),
               );
             },

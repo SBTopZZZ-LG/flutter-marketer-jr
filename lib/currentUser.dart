@@ -20,15 +20,14 @@ class CurrentUser {
   }
 
   static void subtractBalance(num delta) {
-    if (delta <= _availableBalance)
-      _availableBalance -= delta;
+    if (delta <= _availableBalance) _availableBalance -= delta;
   }
 
   static Map toJson() => {
-    "_userId": _userId,
-    "_deviceId": _deviceId,
-    "_availableBalance": _availableBalance,
-  };
+        "_userId": _userId,
+        "_deviceId": _deviceId,
+        "_availableBalance": _availableBalance,
+      };
 
   static void loadFromJson(Map json) {
     _userId = json["_userId"];

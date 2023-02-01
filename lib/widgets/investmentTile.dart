@@ -10,9 +10,8 @@ class InvestmentTile extends StatelessWidget {
   final List<Company> companies;
   final List<Investment> investments;
 
-  InvestmentTile(this.investment, this.companies,
-    this.rootContext, this.investments,
-    this._stateUpdate);
+  InvestmentTile(this.investment, this.companies, this.rootContext,
+      this.investments, this._stateUpdate);
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +19,42 @@ class InvestmentTile extends StatelessWidget {
       return element.getId() == investment.getCompanyId() ? true : false;
     });
     return ListTile(
-      title: Text(currentCompany.getName(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+      title: Text(
+        currentCompany.getName(),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
       subtitle: Text("Purchased shares: ${investment.getShareCount()}"),
-      trailing: Column(children: [
-        Text("B: \$${investment.getTotalAmount().toStringAsFixed(2)}"),
-        Text("S: \$${(currentCompany.getMarketPrice() * investment.getShareCount()).toStringAsFixed(2)}", style: TextStyle(fontSize: 18,
-        color: investment.getTotalAmount() < currentCompany.getMarketPrice() * investment.getShareCount() ? Colors.green.shade700 :
-        investment.getTotalAmount() == currentCompany.getMarketPrice() * investment.getShareCount() ? Colors.blueGrey : Colors.red.shade700),),
-      ],
-      mainAxisAlignment: MainAxisAlignment.spaceAround,),
+      trailing: Column(
+        children: [
+          Text("B: \$${investment.getTotalAmount().toStringAsFixed(2)}"),
+          Text(
+            "S: \$${(currentCompany.getMarketPrice() * investment.getShareCount()).toStringAsFixed(2)}",
+            style: TextStyle(
+                fontSize: 18,
+                color: investment.getTotalAmount() <
+                        currentCompany.getMarketPrice() *
+                            investment.getShareCount()
+                    ? Colors.green.shade700
+                    : investment.getTotalAmount() ==
+                            currentCompany.getMarketPrice() *
+                                investment.getShareCount()
+                        ? Colors.blueGrey
+                        : Colors.red.shade700),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      ),
       onTap: () {
-        showModalBottomSheet(context: rootContext, builder: (BuildContext context2) {
-          return GestureDetector(
-            onTap: () {},
-            child: ViewInvestment(investment, currentCompany, investments, _stateUpdate),
-            behavior: HitTestBehavior.opaque,
-          );
-        });
+        showModalBottomSheet(
+            context: rootContext,
+            builder: (BuildContext context2) {
+              return GestureDetector(
+                onTap: () {},
+                child: ViewInvestment(
+                    investment, currentCompany, investments, _stateUpdate),
+                behavior: HitTestBehavior.opaque,
+              );
+            });
       },
     );
   }

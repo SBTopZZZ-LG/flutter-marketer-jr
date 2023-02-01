@@ -17,13 +17,14 @@ class Investor {
   }
 
   Map<String, Object> toJson() => {
-    "_userId": _userId,
-    "_nShares": _nShares,
-  };
+        "_userId": _userId,
+        "_nShares": _nShares,
+      };
 
   static Investor fromJson(Map json) {
     print(json["_userId"]);
     print(int.parse(json["_nShares"]));
-    return Investor(json["_userId"].toString(), int.parse(json["_nShares"].toString()));
+    return Investor(
+        json["_userId"].toString(), int.parse(json["_nShares"].toString()));
   }
 }

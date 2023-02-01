@@ -5,14 +5,13 @@ class ActionHistory {
   static void addNewRawAction(int actionState, String action) {
     _actions.add(ActionItem(actionState, action));
 
-    if (_actions.length > _maxItems)
-      _actions.removeAt(0);
+    if (_actions.length > _maxItems) _actions.removeAt(0);
   }
+
   static void addNewAction(ActionItem action) {
     _actions.add(action);
 
-    if (_actions.length > _maxItems)
-      _actions.removeAt(0);
+    if (_actions.length > _maxItems) _actions.removeAt(0);
   }
 
   static int getLength() {
@@ -20,8 +19,7 @@ class ActionHistory {
   }
 
   static ActionItem getActionFromIndex(int index) {
-    if (index < _actions.length)
-      return _actions[index];
+    if (index < _actions.length) return _actions[index];
     return null;
   }
 
@@ -32,10 +30,10 @@ class ActionHistory {
   }
 
   static Map toJson() => {
-    "_actions": _actions.map((ActionItem item) {
-      return item.toJson();
-    }).toList(),
-  };
+        "_actions": _actions.map((ActionItem item) {
+          return item.toJson();
+        }).toList(),
+      };
 
   static List<ActionItem> fromJson(List json) {
     return List<ActionItem>.generate(json.length, (index) {
@@ -53,14 +51,15 @@ class ActionItem {
   int getActionState() {
     return _actionState;
   }
+
   String getAction() {
     return _action;
   }
 
   Map toJson() => {
-    "_actionState": _actionState,
-    "_action": _action,
-  };
+        "_actionState": _actionState,
+        "_action": _action,
+      };
 
   static ActionItem fromJson(Map json) {
     return ActionItem(json["_actionState"], json["_action"]);

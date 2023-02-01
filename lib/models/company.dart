@@ -17,15 +17,19 @@ class Company {
   String getId() {
     return _id;
   }
+
   String getName() {
     return _name;
   }
+
   int getShareCount() {
     return _nShares;
   }
+
   num getMarketPrice() {
     return _marketPrice;
   }
+
   num getLastMarketPrice() {
     return _lastMarketPrice;
   }
@@ -64,33 +68,37 @@ class Company {
   }
 
   void deltaShares(int delta) {
-    if (delta >= _nShares)
-        return;
+    if (delta >= _nShares) return;
 
     this._nShares += delta;
   }
+
   void deltaMarketPrice(num delta) {
-    if (this._marketPrice + delta <= 0)
-        return;
+    if (this._marketPrice + delta <= 0) return;
 
     this._lastMarketPrice = this._marketPrice;
     this._marketPrice += delta;
   }
 
   Map toJson() => {
-    "_id": _id,
-    "_name": _name,
-    "_nShares": _nShares,
-    "_marketPrice": _marketPrice,
-    "_lastMarketPrice": _lastMarketPrice,
-    "_investors": _investors.map((Investor investor) {
-      return jsonEncode(investor.toJson());
-    }).toList(),
-  };
+        "_id": _id,
+        "_name": _name,
+        "_nShares": _nShares,
+        "_marketPrice": _marketPrice,
+        "_lastMarketPrice": _lastMarketPrice,
+        "_investors": _investors.map((Investor investor) {
+          return jsonEncode(investor.toJson());
+        }).toList(),
+      };
 
   static Company fromJson(Map json) {
-    return Company(json["_id"], json["_name"], json["_nShares"] as int, json["_marketPrice"] as num,
-        json["_lastMarketPrice"] as num, (jsonDecode(json["_investors"].toString()) as List).map((obj) {
+    return Company(
+        json["_id"],
+        json["_name"],
+        json["_nShares"] as int,
+        json["_marketPrice"] as num,
+        json["_lastMarketPrice"] as num,
+        (jsonDecode(json["_investors"].toString()) as List).map((obj) {
           print(obj["_nShares"].runtimeType.toString());
           Map map = obj as Map;
           return Investor(map["_userId"].toString(), map["_nShares"] as int);

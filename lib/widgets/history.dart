@@ -15,15 +15,28 @@ class _HistoryState extends State<History> {
           margin: EdgeInsets.all(10),
           child: Column(
             children: [
-              SizedBox(height: 10,),
-              Text("History", style: TextStyle(fontSize: 18),),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "History",
+                style: TextStyle(fontSize: 18),
+              ),
               Expanded(
                 child: Container(
                   height: 200,
                   padding: EdgeInsets.all(10),
-                  child: ListView.builder(itemBuilder: (context, index) {
-                    return ListTile(title: FittedBox(child: Text(ActionHistory.getActionFromIndex(ActionHistory.getLength() - (index + 1)).getAction())),);
-                  }, itemCount: ActionHistory.getLength(),),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: FittedBox(
+                            child: Text(ActionHistory.getActionFromIndex(
+                                    ActionHistory.getLength() - (index + 1))
+                                .getAction())),
+                      );
+                    },
+                    itemCount: ActionHistory.getLength(),
+                  ),
                 ),
               ),
             ],
